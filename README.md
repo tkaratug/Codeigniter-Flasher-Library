@@ -11,7 +11,7 @@ $this->load->library('flasher');
 $this->flasher->set_message('This is test message', 'success');
 ```
 If you want to redirect another page pass the url as third parameter;
-```pjhp
+```php
 $this->flasher->set_message('This is test message', 'success', '/other_page_url');
 ```
 

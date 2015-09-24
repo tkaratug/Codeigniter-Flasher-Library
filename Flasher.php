@@ -8,7 +8,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @package 		Codeigniter
  * @subpackage 		Libraries
  * @category 		Session
- * @author 			Turan Karatuğ <http://www.turankaratug.com>
+ * @author 		Turan Karatuğ <http://www.turankaratug.com>
  * @version 		1.0
  */
 

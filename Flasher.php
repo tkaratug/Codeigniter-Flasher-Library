@@ -33,7 +33,7 @@ class Flasher
 	 * @param $url 		string
 	 * @return void
 	 */
-	public function set_flash($message, $type, $url = null)
+	public function set_message($message, $type, $url = null)
 	{
 
 		if(!$message)
@@ -60,7 +60,7 @@ class Flasher
 	 * Get Flash Data with Styling
 	 * @return string
 	 */
-	public function get_flash()
+	public function get_message()
 	{
 		$this->flash_message = $this->CI->session->flashdata('message');
 		return '<div class="alert alert-' . $this->flash_message['type'] .'">' . $this->flash_message['message'] . '</div>';

@@ -5,11 +5,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * Flash Message Library
  * A Simple Flash Messaging Library to easily store flash data in session and view it in your page when loaded.
  *
- * @package 		Codeigniter
- * @subpackage 		Libraries
- * @category 		Session
- * @author 		    Turan Karatuğ <http://www.turankaratug.com>
- * @version 		1.0
+ * @package         Codeigniter
+ * @subpackage      Libraries
+ * @category        Session
+ * @author          Turan Karatuğ <http://www.turankaratug.com>
+ * @version         1.0
  */
 
 class Flasher
@@ -22,35 +22,37 @@ class Flasher
         $this->CI =& get_instance();
 
         // Check if session library is loaded
-        if(!$this->CI->load->is_loaded('session'))
+        if (!$this->CI->load->is_loaded('session'))
             show_error('Please load session library to use flash messages.');
     }
 
     /**
      * Set Flash Data
-     * @param $message 	string
-     * @param $type 	string
-     * @param $url 		string
+     * @param $message  string
+     * @param $type     string
+     * @param $url      string
      * @return void
      */
-    public function set_message($message, $type, $url = null)
+    public function set_message($message, $type, $url = null, $dismissable = false)
     {
-        if(!$message)
+        if (!$message)
             show_error('Please set a flash message.');
 
-        if(!$type)
+        if (!$type)
             show_error('Please set a flash message type.');
 
         $this->flash_message = [
-            'type'		=> $type,
-            'message'	=> $message,
-            'url'		=> $url
+            'type'          => $type,
+            'message'       => $message,
+            'url'           => $url,
+            'dismissable'   => $dismissable,
         ];
 
         $this->CI->session->set_flashdata('message', $this->flash_message);
 
         // Redirect
-        if($url !== null) {
+        if ($url !== null)
+        {
             redirect($url);
         }
     }
@@ -61,9 +63,9 @@ class Flasher
      * @param string|null $url
      * @return void
      */
-    public function set_success($message, $url = null)
+    public function set_success($message, $url = null, $dismissable = false)
     {
-        $this->set_message($message, 'success', $url);
+        $this->set_message($message, 'success', $url, $dismissable);
     }
 
     /**
@@ -72,9 +74,9 @@ class Flasher
      * @param string|null $url
      * @return void
      */
-    public function set_info($message, $url = null)
+    public function set_info($message, $url = null, $dismissable = false)
     {
-        $this->set_message($message, 'info', $url);
+        $this->set_message($message, 'info', $url, $dismissable);
     }
 
     /**
@@ -83,9 +85,9 @@ class Flasher
      * @param string|null $url
      * @return void
      */
-    public function set_warning($message, $url = null)
+    public function set_warning($message, $url = null, $dismissable = false)
     {
-        $this->set_message($message, 'warning', $url);
+        $this->set_message($message, 'warning', $url, $dismissable);
     }
 
     /**
@@ -94,9 +96,9 @@ class Flasher
      * @param string|null $url
      * @return void
      */
-    public function set_danger($message, $url = null)
+    public function set_danger($message, $url = null, $dismissable = false)
     {
-        $this->set_message($message, 'danger', $url);
+        $this->set_message($message, 'danger', $url, $dismissable);
     }
 
     /**
@@ -106,7 +108,12 @@ class Flasher
     public function get_message()
     {
         $this->flash_message = $this->CI->session->flashdata('message');
-        return '<div class="alert alert-' . $this->flash_message['type'] .'">' . $this->flash_message['message'] . '</div>';
+        $ouput = '<div class="alert alert-' . $this->flash_message['type'] . ($this->flash_message['dismissable'] == true ? " alert-dismissable" : "") . '">';
+        if ($this->flash_message['dismissable'] == true) {
+            $ouput .= '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+        }
+        $ouput .= $this->flash_message['message'] . '</div>';
+        return $ouput;
     }
 
     /**
